@@ -167,6 +167,23 @@
 - Format on save enabled by default
 - Supports: JS, JSX, TS, TSX, CSS, SCSS, LESS, JSON, HTML
 
+# Neovim Shortcuts
+
+## General Navigation & Window Management
+- `Ctrl-w >` / `Ctrl-w <`: Expand/shrink window width.
+- `:tabnew %`: Open the current file in a new tab.
+
+## LSP (Language Server Protocol)
+- `K`: Show documentation and type information for the symbol under the cursor (hover).
+- `gd`: Jump to the definition of the symbol under the cursor.
+- `<leader>gD`: (Custom) A potential custom keybinding to go to a definition in a new ta
+
+## Telescope
+- `:Telescope live_grep`: Search for a string in your project and see results live.
+- `:Telescope grep_string`: Search for the word under your cursor in your project.
+
+
+
 ## Notes
 
 - **`<C-x>`** means Ctrl + x
