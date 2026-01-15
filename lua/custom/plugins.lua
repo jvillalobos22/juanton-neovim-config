@@ -75,6 +75,8 @@ return {
         disable_inline_completion = false, -- Disable to stop ghost text from appearing
         disable_keymaps = false, -- Set to true to disable built-in keymaps
       }
+      -- Toggle Supermaven AI completion
+      vim.keymap.set('n', '<leader>smt', '<cmd>SupermavenToggle<CR>', { desc = '[S]uper[m]aven [T]oggle' })
     end,
   },
   -- COMMENTED OUT: nvim-cmp conflicts with blink.cmp (active in init.lua)
@@ -133,10 +135,8 @@ return {
         disable_filetype = { 'TelescopePrompt', 'vim' },
       }
 
-      -- Integration with nvim-cmp (optional but recommended)
-      local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
-      local cmp = require 'cmp'
-      cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+      -- Note: nvim-cmp integration removed since we're using blink.cmp
+      -- blink.cmp handles autopairs automatically
     end,
   },
   {
