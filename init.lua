@@ -148,6 +148,9 @@ end
 local rtp = vim.opt.rtp
 rtp:prepend(lazypath)
 
+-- We are using a custom registry to avoid issues with our private Nexus registry for work
+vim.env.NPM_CONFIG_REGISTRY = 'https://registry.npmjs.org/'
+
 -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run
