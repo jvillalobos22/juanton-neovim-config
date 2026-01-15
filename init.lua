@@ -75,6 +75,13 @@ vim.o.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.o.scrolloff = 10
 
+-- Indentation settings (default to 4 spaces, matching Prettier config)
+vim.o.tabstop = 4 -- Number of spaces a tab counts for
+vim.o.shiftwidth = 4 -- Number of spaces for each indentation level
+vim.o.softtabstop = 4 -- Number of spaces for <Tab> and <BS>
+vim.o.expandtab = true -- Use spaces instead of tabs
+vim.o.smartindent = true -- Auto-indent new lines
+
 -- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
@@ -750,6 +757,16 @@ require('lazy').setup({
         prettier = {
           -- Prefer local node_modules version (which has access to plugins)
           require_cwd = true,
+          -- Default options when no .prettierrc exists
+          prepend_args = {
+            '--config-precedence=prefer-file',
+            '--single-quote',
+            '--trailing-comma=es5',
+            '--print-width=100',
+            '--tab-width=4',
+            '--use-tabs=false',
+            '--semi',
+          },
         },
       },
     },
