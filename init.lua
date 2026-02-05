@@ -87,6 +87,24 @@ vim.o.smartindent = true -- Auto-indent new lines
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+-- [[ Folding Configuration ]]
+-- Use treesitter as the default fold provider, LSP will override when available
+vim.o.foldmethod = 'expr'
+vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+vim.o.foldtext = '' -- Use default fold text (shows first line)
+vim.o.foldcolumn = '1' -- Show fold column (statuscol.nvim will render it)
+vim.o.foldlevel = 99 -- Start with all folds open
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+vim.o.foldnestmax = 4 -- Maximum fold nesting
+
+-- Fold icons (triangles)
+vim.opt.fillchars:append {
+  foldopen = '▾', -- Down triangle for open folds
+  foldclose = '▸', -- Right triangle for closed folds
+  foldsep = ' ', -- Space for fold column separator
+}
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -582,6 +600,13 @@ require('lazy').setup({
               callback = function(event2)
                 vim.lsp.buf.clear_references()
                 vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
+
+                -- Reset to treesitter folding when LSP detaches (if no other LSP clients remain)
+                local remaining_clients = vim.lsp.get_clients { bufnr = event2.buf }
+                if #remaining_clients == 0 then
+                  local win = vim.api.nvim_get_current_win()
+                  vim.wo[win][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+                end
               end,
             })
           end
@@ -594,6 +619,12 @@ require('lazy').setup({
             map('<leader>th', function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, '[T]oggle Inlay [H]ints')
+          end
+
+          -- Use LSP folding if the server supports it, otherwise treesitter is already set as default
+          if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_foldingRange, event.buf) then
+            local win = vim.api.nvim_get_current_win()
+            vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
           end
         end,
       })

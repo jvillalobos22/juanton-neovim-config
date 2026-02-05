@@ -1,4 +1,37 @@
 return {
+  -- Custom status column with fold icons
+  {
+    'luukvbaal/statuscol.nvim',
+    event = 'BufReadPre',
+    config = function()
+      local builtin = require 'statuscol.builtin'
+      require('statuscol').setup {
+        relculright = true, -- Right-align relative line numbers
+        segments = {
+          -- Signs (git, diagnostics, etc.)
+          {
+            sign = { namespace = { 'diagnostic/signs' }, maxwidth = 1, auto = true },
+            click = 'v:lua.ScSa',
+          },
+          -- Line numbers
+          {
+            text = { builtin.lnumfunc, ' ' },
+            click = 'v:lua.ScLa',
+          },
+          -- Fold column with chevron icons
+          {
+            text = { builtin.foldfunc, ' ' },
+            click = 'v:lua.ScFa',
+          },
+          -- Git signs
+          {
+            sign = { namespace = { 'gitsigns' }, maxwidth = 1, colwidth = 1, auto = false },
+            click = 'v:lua.ScSa',
+          },
+        },
+      }
+    end,
+  },
   {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' }, -- optional, for icons
